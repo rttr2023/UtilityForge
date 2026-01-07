@@ -81,14 +81,16 @@ function urlWithParams(base, params){
   return u.toString();
 }
 
-/* ===== Modal helper ===== */
 function modalOpen(title, html){
   const m = qs("modal");
   const t = qs("modalTitle");
   const b = qs("modalBody");
   if(!m || !t || !b) return;
-  t.textContent = title;
+
+  t.textContent = title || "";
   b.innerHTML = html;
+
+  m.hidden = false;
   m.setAttribute("aria-hidden","false");
   document.body.style.overflow = "hidden";
 
@@ -96,12 +98,16 @@ function modalOpen(title, html){
   qs("modalClose")?.addEventListener("click", close, {once:true});
   m.addEventListener("click", (e)=>{ if(e.target === m) modalClose(); }, {once:true});
 }
+
 function modalClose(){
   const m = qs("modal");
   if(!m) return;
+
   m.setAttribute("aria-hidden","true");
+  m.hidden = true;
   document.body.style.overflow = "";
 }
+
 
 /* ===== Premium gating ===== */
 function requirePremiumOrUpsell(featureName){
@@ -456,3 +462,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
   initInvoice();
   initPalette();
 });
+
