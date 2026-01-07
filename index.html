@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>UtilityForge — Générateurs utiles (UTM, mots de passe, facture, JSON…)</title>
+  <meta name="description" content="UtilityForge : générateurs gratuits et premium pour gagner du temps — UTM builder, mot de passe, facture PDF, formatage JSON, palettes couleurs et plus." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://rttr2023.github.io/UtilityForge/" />
+
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="UtilityForge" />
+  <meta property="og:title" content="UtilityForge — Générateurs utiles" />
+  <meta property="og:description" content="Des outils rapides : UTM builder, mot de passe, facture, JSON… + Premium." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rttr2023.github.io/UtilityForge/" />
+  <meta property="og:image" content="https://rttr2023.github.io/UtilityForge/og.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://rttr2023.github.io/UtilityForge/og.png" />
+
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%9B%A0%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="assets/style.css" />
+
+  <!-- AdSense: remplace ca-pub-... -->
+  <!-- Important: AdSense nécessite validation du site + HTTPS -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4765082834721834"
+          crossorigin="anonymous"></script>
+
+  <!-- JSON-LD SEO -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"UtilityForge",
+    "url":"https://rttr2023.github.io/UtilityForge/",
+    "applicationCategory":"BusinessApplication",
+    "operatingSystem":"All",
+    "description":"Générateurs utiles (UTM, mot de passe, facture, JSON, palettes) avec options premium.",
+    "offers":[
+      {"@type":"Offer","name":"Accès Gratuit","price":"0","priceCurrency":"EUR"},
+      {"@type":"Offer","name":"Accès Premium","price":"9.99","priceCurrency":"EUR"}
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="UtilityForge accueil">
+      <span class="logo">🛠️</span>
+      <span class="brandText">UtilityForge</span>
+    </a>
+
+    <nav class="nav">
+      <a href="#outils">Outils</a>
+      <a href="premium.html">Premium</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="cta">
+      <span id="premiumBadge" class="pill" title="Statut Premium">Premium</span>
+      <a class="btn" href="premium.html">Passer Premium</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="heroLeft">
+        <h1>Des générateurs <span class="grad">utiles</span> pour bosser plus vite.</h1>
+        <p class="muted">
+          UTM Builder, mots de passe, facture PDF, formatage JSON, palettes couleurs… et des options premium pour automatiser et exporter.
+        </p>
+
+        <div class="heroActions">
+          <a class="btn" href="#outils">Utiliser les outils</a>
+        </div>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="kpiN">0€</div>
+            <div class="kpiT">Accès gratuit</div>
+          </div>
+          <div class="kpi">
+            <div class="kpiN">1 clic</div>
+            <div class="kpiT">Copier / exporter</div>
+          </div>
+          <div class="kpi">
+            <div class="kpiN">Premium</div>
+            <div class="kpiT">Exports + PDF + bulk</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="heroRight card">
+        <div class="cardHeader">
+          <h2>Outil du moment : UTM Builder</h2>
+          <p class="muted">Crée des liens trackés propres pour tes pubs, TikTok, Insta, YouTube.</p>
+        </div>
+        <div class="cardBody">
+          <div class="grid2">
+            <label>URL de destination
+              <input id="utm_url" placeholder="https://exemple.com/produit" />
+            </label>
+            <label>Source (utm_source)
+              <input id="utm_source" placeholder="tiktok" />
+            </label>
+            <label>Medium (utm_medium)
+              <input id="utm_medium" placeholder="organic" />
+            </label>
+            <label>Campaign (utm_campaign)
+              <input id="utm_campaign" placeholder="lancement_v1" />
+            </label>
+            <label>Content (utm_content) (optionnel)
+              <input id="utm_content" placeholder="hook_1" />
+            </label>
+            <label>Term (utm_term) (optionnel)
+              <input id="utm_term" placeholder="keyword" />
+            </label>
+          </div>
+
+          <div class="result">
+            <div class="resultTop">
+              <strong>Lien final</strong>
+              <div class="resultActions">
+                <button class="btn small ghost" id="utm_copy">Copier</button>
+                <button class="btn small" id="utm_make">Générer</button>
+              </div>
+            </div>
+            <textarea id="utm_out" rows="3" readonly placeholder="Ton lien apparaîtra ici…"></textarea>
+
+            <div class="premiumRow">
+              <span class="tag">Premium</span>
+              <span class="muted">Export CSV + génération en lot (bulk)</span>
+              <button class="btn small" id="utm_bulk_open">Bulk</button>
+            </div>
+          </div>
+
+          <!-- Bloc pub (responsive) : remplace data-ad-slot -->
+          <div class="adWrap" aria-label="Publicité">
+            <ins class="adsbygoogle"
+                 style="display:block; width:100%; min-height:90px;"
+                 data-ad-client="ca-pub-4765082834721834"
+                 data-ad-slot="9467828225"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="outils" class="section">
+      <h2>Outils</h2>
+      <p></p>
+
+      <div class="tools">
+        <!-- Password -->
+        <article class="card tool">
+          <div class="cardHeader">
+            <h3>Générateur de mot de passe</h3>
+            <p class="muted">Fort, copiable, options.</p>
+          </div>
+          <div class="cardBody">
+            <div class="grid2">
+              <label>Longueur
+                <input id="pw_len" type="number" min="8" max="64" value="16" />
+              </label>
+              <label>Options
+                <select id="pw_mode">
+                  <option value="mix">Lettres + chiffres + symboles</option>
+                  <option value="alnum">Lettres + chiffres</option>
+                  <option value="words">Passphrase (mots)</option>
+                </select>
+              </label>
+            </div>
+            <div class="result">
+              <div class="resultTop">
+                <strong>Résultat</strong>
+                <div class="resultActions">
+                  <button class="btn small ghost" id="pw_copy">Copier</button>
+                  <button class="btn small" id="pw_make">Générer</button>
+                </div>
+              </div>
+              <textarea id="pw_out" rows="2" readonly></textarea>
+              <div class="premiumRow">
+                <span class="tag">Premium</span>
+                <span class="muted">Génération de 100 mots de passe + export CSV</span>
+                <button class="btn small" id="pw_bulk_open">Bulk</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- JSON -->
+        <article class="card tool">
+          <div class="cardHeader">
+            <h3>Formateur JSON</h3>
+            <p class="muted">Beautify / minify + validation.</p>
+          </div>
+          <div class="cardBody">
+            <label>JSON
+              <textarea id="json_in" rows="8" placeholder='{"hello":"world"}'></textarea>
+            </label>
+            <div class="row">
+              <button class="btn small" id="json_beautify">Beautify</button>
+              <button class="btn small ghost" id="json_minify">Minify</button>
+              <button class="btn small ghost" id="json_copy">Copier</button>
+            </div>
+            <p class="muted" id="json_status"></p>
+          </div>
+        </article>
+
+        <!-- Invoice -->
+        <article class="card tool">
+          <div class="cardHeader">
+            <h3>Générateur de facture</h3>
+            <p class="muted">Modèle simple (Premium = export PDF).</p>
+          </div>
+          <div class="cardBody">
+            <div class="grid2">
+              <label>Nom / entreprise
+                <input id="inv_from" placeholder="UtilityForge" />
+              </label>
+              <label>Client
+                <input id="inv_to" placeholder="Client SA" />
+              </label>
+              <label>N° Facture
+                <input id="inv_no" placeholder="INV-0001" />
+              </label>
+              <label>Date
+                <input id="inv_date" type="date" />
+              </label>
+              <label>Description
+                <input id="inv_desc" placeholder="Prestation / produit" />
+              </label>
+              <label>Montant (€)
+                <input id="inv_amount" type="number" step="0.01" placeholder="99.00" />
+              </label>
+            </div>
+
+            <div class="result">
+              <div class="resultTop">
+                <strong>Aperçu</strong>
+                <div class="resultActions">
+                  <button class="btn small ghost" id="inv_copy">Copier (texte)</button>
+                  <button class="btn small" id="inv_make">Générer</button>
+                </div>
+              </div>
+              <textarea id="inv_out" rows="7" readonly></textarea>
+
+              <div class="premiumRow">
+                <span class="tag">Premium</span>
+                <span class="muted">Export PDF propre</span>
+                <button class="btn small" id="inv_pdf">Exporter PDF</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Colors -->
+        <article class="card tool">
+          <div class="cardHeader">
+            <h3>Palettes couleurs</h3>
+            <p class="muted">Génère une palette + copie hex.</p>
+          </div>
+          <div class="cardBody">
+            <div class="row">
+              <button class="btn small" id="pal_make">Générer</button>
+              <button class="btn small ghost" id="pal_copy">Copier HEX</button>
+            </div>
+            <div id="pal_grid" class="palette" aria-label="Palette"></div>
+            <p class="muted small">Premium : exporter palette en CSS variables</p>
+            <button class="btn small" id="pal_export_css">Exporter CSS</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+  <h2>Support & Transparence</h2>
+  <div class="tools" style="margin-top:14px;">
+    <article class="card tool">
+      <div class="cardHeader">
+        <h3>Données</h3>
+        <p class="muted">Traitement local, rapide.</p>
+      </div>
+      <div class="cardBody">
+        <p class="muted">
+          Les générateurs fonctionnent directement dans ton navigateur. Par défaut, rien n’est envoyé à un serveur.
+        </p>
+      </div>
+    </article>
+
+    <article class="card tool">
+      <div class="cardHeader">
+        <h3>Premium</h3>
+        <p class="muted">Accès aux exports et fonctions avancées.</p>
+      </div>
+      <div class="cardBody">
+        <p class="muted">
+          Le Premium débloque les exports (CSV/PDF/CSS) et la génération en lot. L’activation se fait via clé sur la page Premium.
+        </p>
+        <a class="btn small" href="premium.html">Voir Premium</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+
+    <footer class="footer">
+      <div class="footerLinks">
+        <a href="premium.html">Premium</a>
+        <a href="privacy.html">Confidentialité</a>
+        <a href="terms.html">Mentions</a>
+      </div>
+      <p class="muted small">© <span id="y"></span> UtilityForge</p>
+    </footer>
+  </main>
+
+  <!-- Modales Bulk / Premium -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalTop">
+        <h3 id="modalTitle">—</h3>
+        <button id="modalClose" class="iconBtn" aria-label="Fermer">✕</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- jsPDF (pour export PDF Premium) -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <script src="assets/app.js"></script>
+
+  <script>
+    // Init AdSense (après insertion du bloc)
+    window.addEventListener("load", () => {
+      try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+    });
+  </script>
+</body>
+</html>

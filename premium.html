@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UtilityForge Premium — Exports & Automatisation</title>
+    <meta name="description"
+        content="Passe Premium pour débloquer les exports CSV, la génération bulk et l'export PDF." />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://rttr2023.github.io/UtilityForge/premium.html" />
+    <link rel="stylesheet" href="assets/style.css" />
+</head>
+
+<body>
+    <header class="topbar">
+        <a class="brand" href="index.html"><span class="logo">🛠️</span><span class="brandText">UtilityForge</span></a>
+        <nav class="nav">
+            <a href="index.html#outils">Outils</a>
+        </nav>
+        <div class="cta">
+            <a class="btn ghost" href="index.html">Retour</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero" style="grid-template-columns: 1fr;">
+            <div class="card">
+                <div class="cardHeader">
+                    <h1>UtilityForge <span class="grad">Premium</span></h1>
+                    <p class="muted">Débloque : UTM bulk + export CSV, passwords bulk, export PDF facture, export CSS
+                        palette.</p>
+                </div>
+
+                <div class="cardBody">
+                    <h2>1) Acheter Premium (Stripe)</h2>
+                    <script async src="https://js.stripe.com/v3/buy-button.js">
+                    </script>
+
+                    <!-- Stripe Buy Button (Payment Links) -->
+                    <script async src="https://js.stripe.com/buy-button.js"></script>
+                    <stripe-buy-button buy-button-id="buy_btn_1SmuSkL7PRnATsAAePDb1BRJ"
+                        publishable-key="pk_live_51SmfgrL7PRnATsAAnWNOdlmQXZr2PgSp1jNNEpIpJOkiojch7YVuC6zGtxeZ784Vu5UbMHr6Ov8ay2RnRZWGReyr000kHmNxyZ">
+                    </stripe-buy-button>
+
+                    <hr style="border:0;border-top:1px solid rgba(255,255,255,.08);margin:16px 0;">
+
+                    <h2>2) Activer avec une clé</h2>
+                    <p class="muted">
+                        Après achat, une clé vous sera envoyer par email.
+                    </p>
+
+                    <div class="grid2">
+                        <label>Email
+                            <input id="email" placeholder="client@email.com">
+                        </label>
+                        <label>Clé Premium
+                            <input id="key" placeholder="UF-XXXX-XXXX-XXXX">
+                        </label>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn" id="activate">Activer Premium</button>
+                        <button class="btn ghost" id="deactivate">Désactiver</button>
+                    </div>
+
+                    <p class="muted small" id="status">—</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footerLinks">
+                <a href="privacy.html">Confidentialité</a>
+                <a href="terms.html">Mentions</a>
+            </div>
+            <p class="muted small">© <span id="y"></span> UtilityForge</p>
+        </footer>
+    </main>
+
+    <script>
+        const COOKIE_PREMIUM = "uf_premium";
+        const COOKIE_KEY = "uf_key";
+
+        // IMPORTANT : change ce secret (long & random).
+        // Il sert à générer/valider une clé sans serveur.
+        const ADMIN_SECRET = "UF-869A-618F-B4C4";
+
+        function setStatus(msg) { document.getElementById("status").textContent = msg; }
+        function copyText(t) { navigator.clipboard.writeText(t).catch(() => { }); }
+
+        function setCookie(name, value, days = 365) {
+            const expires = new Date(Date.now() + days * 864e5).toUTCString();
+            document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; Expires=${expires}; Path=/; SameSite=Lax`;
+        }
+        function deleteCookie(name) {
+            document.cookie = `${encodeURIComponent(name)}=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/; SameSite=Lax`;
+        }
+
+        // SHA-256 helper
+        async function sha256(str) {
+            const enc = new TextEncoder().encode(str);
+            const buf = await crypto.subtle.digest("SHA-256", enc);
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+        }
+
+        function prettyKey(hex) {
+            // UF-xxxx-xxxx-xxxx (12 hex chars)
+            const s = hex.slice(0, 12).toUpperCase();
+            return `UF-${s.slice(0, 4)}-${s.slice(4, 8)}-${s.slice(8, 12)}`;
+        }
+
+        async function makeKey(email) {
+            const h = await sha256((email.trim().toLowerCase()) + "|" + ADMIN_SECRET);
+            return prettyKey(h);
+        }
+
+        document.getElementById("activate").addEventListener("click", async () => {
+            const email = document.getElementById("email").value || "";
+            const key = (document.getElementById("key").value || "").trim().toUpperCase();
+            if (!email || !key) return setStatus("❌ Email et clé requis.");
+
+            const expected = await makeKey(email);
+            if (key === expected) {
+                setCookie(COOKIE_PREMIUM, "1", 365);
+                setCookie(COOKIE_KEY, key, 365);
+                setStatus("✅ Premium activé. Tu peux retourner sur la page des outils.");
+            } else {
+                setStatus("❌ Clé invalide.");
+            }
+        });
+
+        document.getElementById("deactivate").addEventListener("click", () => {
+            deleteCookie(COOKIE_PREMIUM);
+            deleteCookie(COOKIE_KEY);
+            setStatus("Premium désactivé sur ce navigateur.");
+        });
+
+        // Générateur de clé (pour toi / admin)
+        document.getElementById("gen").addEventListener("click", async () => {
+            const email = document.getElementById("gen_email").value || "";
+            if (!email) return;
+            document.getElementById("gen_out").value = await makeKey(email);
+        });
+
+        document.getElementById("gen_copy").addEventListener("click", () => {
+            copyText(document.getElementById("gen_out").value || "");
+        });
+
+        document.getElementById("y").textContent = String(new Date().getFullYear());
+    </script>
+
+</body>
+
+</html>

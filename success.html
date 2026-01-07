@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paiement validé — UtilityForge</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="logo">🛠️</span><span class="brandText">UtilityForge</span></a>
+    <div class="cta"><a class="btn" href="premium.html">Activer Premium</a></div>
+  </header>
+
+  <main class="container">
+  <section class="hero" style="grid-template-columns:1fr;">
+    <div class="card">
+      <div class="cardHeader">
+        <h1>✅ Paiement confirmé</h1>
+        <p class="muted">
+          Dernière étape : génère ta clé Premium.
+        </p>
+      </div>
+
+      <div class="cardBody">
+        <p class="muted">
+          Entre l’email utilisé lors du paiement Stripe.
+        </p>
+
+        <label>Email
+          <input id="email" placeholder="ton@email.com">
+        </label>
+
+        <div class="row">
+          <button class="btn" id="gen">Générer ma clé Premium</button>
+        </div>
+
+        <label>Clé Premium
+          <input id="out" readonly>
+        </label>
+
+        <div class="row">
+          <button class="btn small ghost" id="copy">Copier la clé</button>
+          <a class="btn small" href="premium.html">Activer Premium</a>
+        </div>
+
+        <p class="muted small" id="status"></p>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  const ADMIN_SECRET = "UF-869A-618F-B4C4";
+
+  function copyText(t){
+    navigator.clipboard.writeText(t).catch(()=>{});
+  }
+
+  async function sha256(str){
+    const enc = new TextEncoder().encode(str);
+    const buf = await crypto.subtle.digest("SHA-256", enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+
+  function prettyKey(hex){
+    const s = hex.slice(0,12).toUpperCase();
+    return `UF-${s.slice(0,4)}-${s.slice(4,8)}-${s.slice(8,12)}`;
+  }
+
+  async function makeKey(email){
+    const h = await sha256(email.trim().toLowerCase() + "|" + ADMIN_SECRET);
+    return prettyKey(h);
+  }
+
+  document.getElementById("gen").addEventListener("click", async ()=>{
+    const email = document.getElementById("email").value || "";
+    if(!email){
+      document.getElementById("status").textContent = "❌ Email requis.";
+      return;
+    }
+
+    document.getElementById("out").value = await makeKey(email);
+    document.getElementById("status").textContent = "✅ Clé générée. Copie-la et active Premium.";
+  });
+
+  document.getElementById("copy").addEventListener("click", ()=>{
+    copyText(document.getElementById("out").value || "");
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rttr2023.github.io/UtilityForge/sitemap.xml
